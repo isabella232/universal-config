@@ -94,14 +94,29 @@ class Config {
 
   getLocalOverrides() {
     let overrides;
-    const filename = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+    const warnTemplate = 'Using local overrides in `./config/%s.js`.';
 
     try {
-      overrides = process.env.NODE_ENV === 'production'
-        ? require('../../../config/prod')
-        : require('../../../config/dev');
+      switch (process.env.NODE_ENV) {
+        case 'production':
+          overrides = require('../../../config/prod');
+          console.warn(warnTemplate, 'prod');
+          break;
 
-      console.warn(`Using local overrides in \`./config/${filename}.js\`.`);
+        case 'development':
+          overrides = require('../../../config/dev');
+          console.warn(warnTemplate, 'dev');
+          break;
+
+        case 'test':
+          overrides = require('../../../config/test');
+          console.warn(warnTemplate, 'test');
+          break;
+
+        default:
+          overrides = require('../../../config/dev');
+          console.warn('Could not match the provided NODE_ENV. Defaulting to `dev`');
+      }
     } catch(e) {
       overrides = {};
     }

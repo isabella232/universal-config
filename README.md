@@ -86,7 +86,9 @@ In development, you may want to environment variables in a file instead of your 
 
 If you want to use this approach, you can override any server or client variable by creating a `dev.js` file in your `config` directory.  You'll want to add this file to your `.gitignore`.
 
-For testing production locally, you may also specify a `prod.js` in the config directory. It will be imported when NODE_ENV is set to 'production'.
+For running production locally, you may also specify a `prod.js` in the config directory. It will be imported when `process.env.NODE_ENV` is set to `production`.
+
+For testing, you can create a `test.js` in the config directory. Similarly, it will be loaded when `process.env.NODE_ENV` is set to `test`.
 
 __NOTE:__ _The variables in these files will be exposed both on the client and the server, but this shouldn't be a problem since you should only be using this locally._
 

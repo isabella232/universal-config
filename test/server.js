@@ -3,6 +3,9 @@ var mockery = require('mockery');
 var config;
 var CLIENT_VAR = require('./stubs/config/client');
 var SERVER_VAR = require('./stubs/config/server');
+var DEV_VAR = require('./stubs/config/dev');
+var PROD_VAR = require('./stubs/config/prod');
+var TEST_VAR = require('./stubs/config/test');
 
 describe('Server', function() {
   before(function() {
@@ -24,6 +27,14 @@ describe('Server', function() {
     mockery.registerSubstitute(
       '../../../config/dev',
       '../test/stubs/config/dev'
+    );
+    mockery.registerSubstitute(
+      '../../../config/prod',
+      '../test/stubs/config/prod'
+    );
+    mockery.registerSubstitute(
+      '../../../config/test',
+      '../test/stubs/config/test'
     );
 
     config = require('../lib/index');
@@ -70,13 +81,16 @@ describe('Server', function() {
      it('should get a dev value', function() {
       assert.strictEqual(
         config.get('DEV'),
-        true
+        DEV_VAR.DEV
       );
     });
 
-    // Prod values
+    // Other config values
      it('should not get the dev value', function() {
       assert.isUndefined(config.get('PROD'));
+    });
+    it('should not get the test value', function() {
+      assert.isUndefined(config.get('TEST'));
     });
 
     // Undefined values
